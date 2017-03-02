@@ -1,4 +1,6 @@
-# Relation Extraction
+# Relation Extraction [In-Progress]
+
+Implementation uses the [Saul language](https://github.com/IllinoisCogComp/saul). 
 
 The main features used are based upon the following paper:
 
