@@ -15,7 +15,7 @@ resolvers ++= Seq(
 )
 
 val cogcompGroupId = "edu.illinois.cs.cogcomp"
-val cogcompNLPVersion = "3.0.100"
+val cogcompNLPVersion = "3.1.1"
 
 libraryDependencies ++= Seq(
   cogcompGroupId %% "saul" % "0.5.7",
@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
-      organization := "io.github.bhargav",
+      organization := "org.cogcomp",
       scalaVersion := "2.11.8",
       scalacOptions ++= Seq("-unchecked", "-deprecation")
     )),

@@ -4,12 +4,12 @@
   * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
   * http://cogcomp.cs.illinois.edu/
   */
-package edu.illinois.cs.cogcomp.RelationExtraction
+package org.cogcomp.SaulRelationExtraction
 
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
-import edu.illinois.cs.cogcomp.saul.classifier.ConstrainedClassifier
-import edu.illinois.cs.cogcomp.RelationExtraction.REClassifiers._
 import edu.illinois.cs.cogcomp.infer.ilp.OJalgoHook
+import edu.illinois.cs.cogcomp.saul.classifier.ConstrainedClassifier
+import org.cogcomp.SaulRelationExtraction.REClassifiers._
 
 object REConstrainedClassifiers {
 

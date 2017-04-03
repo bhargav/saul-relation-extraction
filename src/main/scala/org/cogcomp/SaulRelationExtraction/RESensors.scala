@@ -4,15 +4,16 @@
   * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
   * http://cogcomp.cs.illinois.edu/
   */
-package edu.illinois.cs.cogcomp.RelationExtraction
+package org.cogcomp.SaulRelationExtraction
 
-import java.util.{ HashMap => JHashMap, List => JList, Map => JMap }
+import java.util.{HashMap => JHashMap, List => JList, Map => JMap}
+
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation._
-import edu.illinois.cs.cogcomp.illinoisRE.data.{ Mention, SemanticRelation }
+import edu.illinois.cs.cogcomp.illinoisRE.data.{Mention, SemanticRelation}
 import edu.illinois.cs.cogcomp.illinoisRE.mention.MentionUtil
 import edu.illinois.cs.cogcomp.illinoisRE.relation.RelationExtractor
-import edu.illinois.cs.cogcomp.nlp.corpusreaders.ACEReader
 import edu.illinois.cs.cogcomp.saul.util.Logging
+
 import scala.collection.JavaConversions._
 
 object RESensors extends Logging {

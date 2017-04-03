@@ -136,17 +136,17 @@ To run the Mention Type Classifiers, run the following command from the project 
 or the sbt console accordingly.
 
 ```scala
-  sbt runMain edu.illinois.cs.cogcomp.RelationExtraction.RelationExtractionApp MentionCV
+  sbt runMain org.cogcomp.SaulRelationExtraction.RelationExtractionApp MentionCV
 ```
 
 To run the Relation Type Classifier CV,
 
 ```scala
-  sbt runMain edu.illinois.cs.cogcomp.RelationExtraction.RelationExtractionApp RelationCV
+  sbt runMain org.cogcomp.SaulRelationExtraction.RelationExtractionApp RelationCV
 ```
 
 To run the Relation Type Classifier With Brown Cluster Features CV,
 
 ```scala
-  sbt runMain edu.illinois.cs.cogcomp.RelationExtraction.RelationExtractionApp RelationCVWithBrownClusterFeatures
+  sbt runMain org.cogcomp.SaulelationExtraction.RelationExtractionApp RelationCVWithBrownClusterFeatures
 ```

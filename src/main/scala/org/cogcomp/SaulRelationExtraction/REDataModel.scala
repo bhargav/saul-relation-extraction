@@ -4,14 +4,14 @@
   * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
   * http://cogcomp.cs.illinois.edu/
   */
-package edu.illinois.cs.cogcomp.RelationExtraction
+package org.cogcomp.SaulRelationExtraction
 
-import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{ Sentence, TextAnnotation, Constituent }
+import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{Constituent, Sentence, TextAnnotation}
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
-import edu.illinois.cs.cogcomp.saul.datamodel.DataModel
 import edu.illinois.cs.cogcomp.illinoisRE.mention.MentionTypeFeatures
 import edu.illinois.cs.cogcomp.illinoisRE.relation.RelationFeatures
-import edu.illinois.cs.cogcomp.RelationExtraction.REConstants.{ EXIST_MENTION, NONE_MENTION }
+import edu.illinois.cs.cogcomp.saul.datamodel.DataModel
+import org.cogcomp.SaulRelationExtraction.REConstants.{EXIST_MENTION, NONE_MENTION}
 
 import scala.collection.JavaConversions._
 

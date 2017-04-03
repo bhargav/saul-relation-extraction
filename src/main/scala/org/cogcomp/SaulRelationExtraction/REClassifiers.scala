@@ -4,14 +4,15 @@
   * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
   * http://cogcomp.cs.illinois.edu/
   */
-package edu.illinois.cs.cogcomp.RelationExtraction
+package org.cogcomp.SaulRelationExtraction
 
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation.Constituent
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
-import edu.illinois.cs.cogcomp.lbjava.learn.{ SparseNetworkLearner, SupportVectorMachine }
+import edu.illinois.cs.cogcomp.lbjava.learn.{SparseNetworkLearner, SupportVectorMachine}
 import edu.illinois.cs.cogcomp.saul.classifier.Learnable
 import edu.illinois.cs.cogcomp.saul.datamodel.property.Property
-import edu.illinois.cs.cogcomp.RelationExtraction.REDataModel._
+
+import org.cogcomp.SaulRelationExtraction.REDataModel._
 
 object REClassifiers {
   var useRelationBrownFeatures = false

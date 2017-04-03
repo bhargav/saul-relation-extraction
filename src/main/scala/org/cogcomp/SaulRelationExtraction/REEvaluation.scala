@@ -4,13 +4,16 @@
   * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
   * http://cogcomp.cs.illinois.edu/
   */
-package edu.illinois.cs.cogcomp.RelationExtraction
+package org.cogcomp.SaulRelationExtraction
 
-import java.io.{ FileOutputStream, PrintStream }
+import java.io.{FileOutputStream, PrintStream}
 
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation.Constituent
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
 import edu.illinois.cs.cogcomp.lbjava.classify.TestDiscrete
+
+import org.cogcomp.SaulRelationExtraction.REClassifiers._
+import org.cogcomp.SaulRelationExtraction.REConstrainedClassifiers._
 
 /** Helper class for evaluation across experiments */
 case class EvaluationResult(classifierName: String, foldIndex: Int, performance: TestDiscrete) {
@@ -33,8 +36,6 @@ object REEvaluation {
     val testInstances = REDataModel.tokens.getTestingInstances
     val excludeList = REConstants.NONE_MENTION :: Nil
 
-    import REClassifiers._
-
     evaluate[Constituent](testInstances, "Mention Fine", fold, mentionTypeFineClassifier(_), _.getLabel, excludeList) ::
       evaluate[Constituent](testInstances, "Mention Coarse", fold, mentionTypeCoarseClassifier(_), REDataModel.mentionCoarseLabel(_), excludeList) :: Nil
   }
@@ -42,9 +43,6 @@ object REEvaluation {
   def evaluationRelationTypeClassifier(fold: Int): List[EvaluationResult] = {
     val testInstances = REDataModel.pairedRelations.getTestingInstances
     val excludeList = REConstants.NO_RELATION :: Nil
-
-    import REClassifiers._
-    import REConstrainedClassifiers._
 
     evaluate[SemanticRelation](testInstances, "Relation Fine", fold, relationTypeFineClassifier(_), _.getFineLabel, excludeList) ::
       evaluate[SemanticRelation](testInstances, "Relation Coarse", fold, relationTypeCoarseClassifier(_), _.getCoarseLabel, excludeList) ::
@@ -54,8 +52,6 @@ object REEvaluation {
   def evaluationRelationConstrainedClassifier(fold: Int): List[EvaluationResult] = {
     val testInstances = REDataModel.pairedRelations.getTestingInstances
     val excludeList = REConstants.NO_RELATION :: Nil
-
-    import REConstrainedClassifiers._
 
     evaluate[SemanticRelation](
       testInstances,
