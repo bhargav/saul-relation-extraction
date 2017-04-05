@@ -9,8 +9,12 @@ package org.cogcomp.SaulRelationExtraction
 import java.io._
 import java.time.LocalDateTime
 
+import edu.illinois.cs.cogcomp.annotation.Annotator
 import edu.illinois.cs.cogcomp.core.datastructures.ViewNames
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{Constituent, SpanLabelView, TextAnnotation}
+import edu.illinois.cs.cogcomp.core.io.caches.TextAnnotationMapDBHandler
+import edu.illinois.cs.cogcomp.core.stats.Counter
+import edu.illinois.cs.cogcomp.core.utilities.Table
 import edu.illinois.cs.cogcomp.curator.CuratorFactory
 import edu.illinois.cs.cogcomp.illinoisRE.common.Document
 import edu.illinois.cs.cogcomp.illinoisRE.mention.MentionDetector
@@ -18,6 +22,7 @@ import edu.illinois.cs.cogcomp.lbjava.learn.Softmax
 import edu.illinois.cs.cogcomp.lbjava.parse.FoldParser
 import edu.illinois.cs.cogcomp.lbjava.parse.FoldParser.SplitPolicy
 import edu.illinois.cs.cogcomp.nlp.corpusreaders.ACEReader
+import edu.illinois.cs.cogcomp.pipeline.server.ServerClientAnnotator
 import edu.illinois.cs.cogcomp.saul.classifier.{ClassifierUtils, JointTrainSparseNetwork}
 import edu.illinois.cs.cogcomp.saul.parser.{IterableToLBJavaParser, LBJavaParserToIterable}
 import edu.illinois.cs.cogcomp.saul.util.Logging
@@ -31,7 +36,7 @@ import scala.util.Random
 object RelationExtractionApp extends Logging {
   /** Enumerates Experiment Type */
   object REExperimentType extends Enumeration {
-    val MentionCV, RelationCV, RelationCVWithBrownFeatures, JointTraining, JointTrainingWithBrownFeatures = Value
+    val CacheDataset, MentionCV, RelationCV, RelationCVWithBrownFeatures, JointTraining, JointTrainingWithBrownFeatures = Value
 
     def withNameOpt(s: String): Option[Value] = values.find(_.toString == s)
   }
@@ -56,6 +61,11 @@ object RelationExtractionApp extends Logging {
       .getOrElse(REExperimentType.JointTraining)
 
     val docs = loadDataset(DatasetTypeACE05)
+
+    if (experimentType == REExperimentType.CacheDataset) {
+      return
+    }
+
     docs.foreach(preProcessDocument)
 
     val numSentences = docs.map(_.getNumberOfSentences).sum
@@ -383,16 +393,16 @@ object RelationExtractionApp extends Logging {
     * @return List of TextAnnotation items each of them representing a single document
     */
   def loadDataset(dataset: String): Iterable[TextAnnotation] = {
+    logger.info(s"Loading dataset $dataset")
     val sections = Array("bn", "nw")
 
-    val datasetRootPath = s"../data/$dataset/data/English"
+    val datasetRootPath = s"data/$dataset"
     val is2004Dataset = dataset.equals(DatasetTypeACE04)
 
-    val cacheFilePath = s"../data/${dataset}_${sections.sorted.reduce(_ + "_" + _)}.index"
-    val cacheFile = new File(cacheFilePath)
+    val cacheFilePath = s"data/$dataset.cache"
+    val cacheHandler = new TextAnnotationMapDBHandler(cacheFilePath)
 
-    val annotatorService = CuratorFactory.buildCuratorClient
-    val requiredViews = List(
+    val requiredViews = Set(
       ViewNames.POS,
       ViewNames.SHALLOW_PARSE,
       ViewNames.NER_CONLL,
@@ -400,47 +410,63 @@ object RelationExtractionApp extends Logging {
       ViewNames.DEPENDENCY_STANFORD
     )
 
-    if (cacheFile.exists()) {
-      try {
-        val inputStream = new ObjectInputStream(new FileInputStream(cacheFile.getPath))
-        val taItems = inputStream.readObject.asInstanceOf[List[TextAnnotation]]
-        inputStream.close()
+    val annotatorService = new ServerClientAnnotator()
+    annotatorService.setUrl("http://austen.cs.illinois.edu", "8080")
+    annotatorService.setViewsAll(requiredViews.toArray[String])
 
-        taItems
-      } catch {
-        case ex: Exception =>
-          logger.error("Failure while reading cache file!", ex)
-          cacheFile.deleteOnExit()
+    if (!cacheHandler.isCached(dataset, cacheFilePath)) {
+      val annotationStats = new Counter[String]()
+      val viewsFailedStats = new Counter[String]()
+      val failureReasonStats = new Counter[String]()
 
-          Iterable.empty
-      }
-    } else {
       val aceReader: Iterable[TextAnnotation] = new ACEReader(datasetRootPath, sections, is2004Dataset)
-      val items = aceReader.map({ textAnnotation =>
+      aceReader.foreach({ textAnnotation =>
         try {
           // Add required views to the TextAnnotation
-          requiredViews.foreach(view => annotatorService.addView(textAnnotation, view))
-          Option(textAnnotation)
+          annotatorService.addView(textAnnotation)
+
+          val viewsPresent = textAnnotation.getAvailableViews
+          val diffSet = requiredViews.diff(viewsPresent)
+
+          if (diffSet.isEmpty) {
+            annotationStats.incrementCount("Processed")
+            cacheHandler.addTextAnnotation(dataset, textAnnotation)
+          }
+
+          diffSet.foreach(viewsFailedStats.incrementCount)
         } catch {
-          case ex: Exception => logger.error("Annotator error!", ex); None
+          case ex: Exception =>
+            logger.error("Annotator error!", ex)
+            annotationStats.incrementCount("Failed")
+            viewsFailedStats.incrementCount(ex.getMessage)
         }
       })
-        .filter(_.nonEmpty)
-        .map(_.get)
 
-      if (items.nonEmpty) {
-        // Cache annotated TAs for faster processing and not calling Curator always.
-        try {
-          val fileStream = new FileOutputStream(cacheFile)
-          val objectStream = new ObjectOutputStream(fileStream)
-          objectStream.writeObject(items)
-          objectStream.flush()
-        } catch {
-          case ex: Exception => logger.error("Error while writing cache file!", ex)
-        }
-      }
+      logger.info("Dataset Parsing Stats:")
+      logger.info(getCounterTable(annotationStats))
 
-      items
+      logger.info("Views Failure Stats:")
+      logger.info(getCounterTable(viewsFailedStats))
+
+      logger.debug("Failure Reasons")
+      logger.info(getCounterTable(failureReasonStats))
     }
+
+    val taList = cacheHandler.getDataset(dataset).toList
+    cacheHandler.close()
+
+    taList
+  }
+
+  def getCounterTable[T <: java.io.Serializable](counter: Counter[T]): String = {
+    val table = new Table()
+    table.addColumn("Item")
+    table.addColumn("Count")
+
+    for (s <- counter.getSortedItems) {
+      table.addRow(Array[AnyRef](s.toString, "" + counter.getCount(s).toInt))
+    }
+
+    table.toTextTable
   }
 }

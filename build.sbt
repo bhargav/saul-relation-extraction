@@ -21,7 +21,9 @@ libraryDependencies ++= Seq(
   cogcompGroupId %% "saul" % "0.5.7",
   cogcompGroupId % "illinois-core-utilities" % cogcompNLPVersion,
   cogcompGroupId % "illinois-corpusreaders" % cogcompNLPVersion,
-  cogcompGroupId % "illinois-mention-relation" % "0.0.5-SNAPSHOT"
+  cogcompGroupId % "illinois-nlp-pipeline" % cogcompNLPVersion,
+  cogcompGroupId % "illinois-mention-relation" % "0.0.5-SNAPSHOT",
+  "ch.qos.logback" % "logback-classic" % "1.2.3"
 )
 
 lazy val root = (project in file(".")).
