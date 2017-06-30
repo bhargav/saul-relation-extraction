@@ -18,8 +18,7 @@ resolvers ++= Seq(
 )
 
 val cogcompGroupId = "edu.illinois.cs.cogcomp"
-val cogcompNLPVersion = "3.1.1"
-
+val cogcompNLPVersion = "3.1.23"
 
 libraryDependencies ++= Seq(
   cogcompGroupId %% "saul" % "0.5.8-SNAPSHOT",
