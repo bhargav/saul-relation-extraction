@@ -11,14 +11,15 @@ val headerMsg =  """/** This software is released under the University of Illino
 version := "0.0.1"
 
 resolvers ++= Seq(
-  "CogComp Software" at "http://cogcomp.cs.illinois.edu/m2repo/"
+  "CogComp Software" at "http://cogcomp.cs.illinois.edu/m2repo/",
+  Resolver.mavenLocal
 )
 
 val cogcompGroupId = "edu.illinois.cs.cogcomp"
 val cogcompNLPVersion = "3.1.1"
 
 libraryDependencies ++= Seq(
-  cogcompGroupId %% "saul" % "0.5.7",
+  cogcompGroupId %% "saul" % "0.5.8-SNAPSHOT",
   cogcompGroupId % "illinois-core-utilities" % cogcompNLPVersion,
   cogcompGroupId % "illinois-corpusreaders" % cogcompNLPVersion,
   cogcompGroupId % "illinois-nlp-pipeline" % cogcompNLPVersion,

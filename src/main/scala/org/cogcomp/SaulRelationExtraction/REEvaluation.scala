@@ -31,7 +31,6 @@ case class EvaluationResult(classifierName: String, foldIndex: Int, performance:
 }
 
 object REEvaluation {
-
   def evaluateMentionTypeClassifier(fold: Int): List[EvaluationResult] = {
     val testInstances = REDataModel.tokens.getTestingInstances
     val excludeList = REConstants.NONE_MENTION :: Nil
@@ -46,7 +45,7 @@ object REEvaluation {
 
     evaluate[SemanticRelation](testInstances, "Relation Fine", fold, relationTypeFineClassifier(_), _.getFineLabel, excludeList) ::
       evaluate[SemanticRelation](testInstances, "Relation Coarse", fold, relationTypeCoarseClassifier(_), _.getCoarseLabel, excludeList) ::
-      evaluate[SemanticRelation](testInstances, "Relation Hierarchy Constraint", fold, relationHierarchyConstrainedClassifier.classifier.discreteValue, _.getFineLabel, excludeList) :: Nil
+      evaluate[SemanticRelation](testInstances, "Relation Hierarchy Constraint", fold, relationHierarchyConstrainedClassifier.onClassifier.classifier.discreteValue, _.getFineLabel, excludeList) :: Nil
   }
 
   def evaluationRelationConstrainedClassifier(fold: Int): List[EvaluationResult] = {
@@ -57,7 +56,7 @@ object REEvaluation {
       testInstances,
       "Relation Hierarchy Constraint",
       fold,
-      relationHierarchyConstrainedClassifier.classifier.discreteValue,
+      relationHierarchyConstrainedClassifier.onClassifier.classifier.discreteValue,
       _.getFineLabel,
       excludeList
     ) :: Nil

@@ -7,16 +7,17 @@
 package org.cogcomp.SaulRelationExtraction
 
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
-import edu.illinois.cs.cogcomp.infer.ilp.OJalgoHook
-import edu.illinois.cs.cogcomp.saul.classifier.ConstrainedClassifier
+
+import edu.illinois.cs.cogcomp.saul.classifier.infer.ConstrainedClassifier
+import edu.illinois.cs.cogcomp.saul.classifier.infer.solver.OJAlgo
+import edu.illinois.cs.cogcomp.saul.lbjrelated.LBJLearnerEquivalent
+
 import org.cogcomp.SaulRelationExtraction.REClassifiers._
 
 object REConstrainedClassifiers {
-
-  object relationHierarchyConstrainedClassifier extends ConstrainedClassifier[SemanticRelation, SemanticRelation](
-    relationTypeFineClassifier
-  ) {
-    def subjectTo = REConstraints.relationHierarchyConstraint
-    override def solver = new OJalgoHook
+  object relationHierarchyConstrainedClassifier extends ConstrainedClassifier[SemanticRelation, SemanticRelation] {
+    override def onClassifier: LBJLearnerEquivalent = relationTypeFineClassifier
+    override def subjectTo = Some(REConstraints.relationHierarchyConstraint)
+    override def solverType = OJAlgo
   }
 }
