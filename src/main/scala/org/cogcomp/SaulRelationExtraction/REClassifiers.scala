@@ -1,14 +1,15 @@
-/** This software is released under the University of Illinois/Research and Academic Use License. See
-  * the LICENSE file in the root folder for details. Copyright (c) 2016
-  *
-  * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
-  * http://cogcomp.cs.illinois.edu/
-  */
+/**
+ * This software is released under the University of Illinois/Research and Academic Use License. See
+ * the LICENSE file in the root folder for details. Copyright (c) 2016
+ *
+ * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
+ * http://cogcomp.cs.illinois.edu/
+ */
 package org.cogcomp.SaulRelationExtraction
 
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation.Constituent
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
-import edu.illinois.cs.cogcomp.lbjava.learn.{SparseNetworkLearner, SupportVectorMachine}
+import edu.illinois.cs.cogcomp.lbjava.learn.{ SparseNetworkLearner, SupportVectorMachine }
 import edu.illinois.cs.cogcomp.saul.classifier.Learnable
 import edu.illinois.cs.cogcomp.saul.datamodel.property.Property
 

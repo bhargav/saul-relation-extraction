@@ -1,17 +1,18 @@
-/** This software is released under the University of Illinois/Research and Academic Use License. See
-  * the LICENSE file in the root folder for details. Copyright (c) 2016
-  *
-  * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
-  * http://cogcomp.cs.illinois.edu/
-  */
+/**
+ * This software is released under the University of Illinois/Research and Academic Use License. See
+ * the LICENSE file in the root folder for details. Copyright (c) 2016
+ *
+ * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
+ * http://cogcomp.cs.illinois.edu/
+ */
 package org.cogcomp.SaulRelationExtraction
 
-import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{Constituent, Sentence, TextAnnotation}
+import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{ Constituent, Sentence, TextAnnotation }
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
 import edu.illinois.cs.cogcomp.illinoisRE.mention.MentionTypeFeatures
 import edu.illinois.cs.cogcomp.illinoisRE.relation.RelationFeatures
 import edu.illinois.cs.cogcomp.saul.datamodel.DataModel
-import org.cogcomp.SaulRelationExtraction.REConstants.{EXIST_MENTION, NONE_MENTION}
+import org.cogcomp.SaulRelationExtraction.REConstants.{ EXIST_MENTION, NONE_MENTION }
 
 import scala.collection.JavaConversions._
 

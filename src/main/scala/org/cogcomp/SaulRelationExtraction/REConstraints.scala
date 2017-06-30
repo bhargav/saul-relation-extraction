@@ -1,14 +1,15 @@
-/** This software is released under the University of Illinois/Research and Academic Use License. See
-  * the LICENSE file in the root folder for details. Copyright (c) 2016
-  *
-  * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
-  * http://cogcomp.cs.illinois.edu/
-  */
+/**
+ * This software is released under the University of Illinois/Research and Academic Use License. See
+ * the LICENSE file in the root folder for details. Copyright (c) 2016
+ *
+ * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
+ * http://cogcomp.cs.illinois.edu/
+ */
 package org.cogcomp.SaulRelationExtraction
 
 import edu.illinois.cs.cogcomp.illinoisRE.data.SemanticRelation
 import edu.illinois.cs.cogcomp.saul.classifier.infer.Constraint._
-import edu.illinois.cs.cogcomp.saul.classifier.infer.{Constraint, PairConjunction}
+import edu.illinois.cs.cogcomp.saul.classifier.infer.{ Constraint, PairConjunction }
 import org.cogcomp.SaulRelationExtraction.REClassifiers._
 
 object REConstraints {
@@ -36,16 +37,16 @@ object REConstraints {
   )
 
   /** Constraint enforcing coarse-fine relation hierarchy on relations */
-    val relationHierarchyConstraint = REDataModel.pairedRelations.ForEach({
-      rel: SemanticRelation =>
-        relationHierarchy.map({
-          case (coarseLabel, fineLabelList) =>
-            // We generate the `implication` statement for each coarse label by constraining the fine labels
-            // to occur from the child relations only.
-            (relationTypeCoarseClassifier on rel is coarseLabel) ==>
-              fineLabelList.map((relationTypeFineClassifier on rel) is _).reduce[Constraint[_]](_ or _)
-        }).reduce[Constraint[_]](_ and _)
-    })
+  val relationHierarchyConstraint = REDataModel.pairedRelations.ForEach({
+    rel: SemanticRelation =>
+      relationHierarchy.map({
+        case (coarseLabel, fineLabelList) =>
+          // We generate the `implication` statement for each coarse label by constraining the fine labels
+          // to occur from the child relations only.
+          (relationTypeCoarseClassifier on rel is coarseLabel) ==>
+            fineLabelList.map((relationTypeFineClassifier on rel) is _).reduce[Constraint[_]](_ or _)
+      }).reduce[Constraint[_]](_ and _)
+  })
 
   private val relationToFirstEntityMapping: Map[String, (List[String], List[String])] = Map(
     ("m1-ART-m2", (List("GPE", "ORG", "PER"), List("FAC", "GPE", "VEH", "WEA"))),

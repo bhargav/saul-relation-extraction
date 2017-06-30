@@ -1,15 +1,16 @@
-/** This software is released under the University of Illinois/Research and Academic Use License. See
-  * the LICENSE file in the root folder for details. Copyright (c) 2016
-  *
-  * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
-  * http://cogcomp.cs.illinois.edu/
-  */
+/**
+ * This software is released under the University of Illinois/Research and Academic Use License. See
+ * the LICENSE file in the root folder for details. Copyright (c) 2016
+ *
+ * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
+ * http://cogcomp.cs.illinois.edu/
+ */
 package org.cogcomp.SaulRelationExtraction
 
-import java.util.{HashMap => JHashMap, List => JList, Map => JMap}
+import java.util.{ HashMap => JHashMap, List => JList, Map => JMap }
 
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation._
-import edu.illinois.cs.cogcomp.illinoisRE.data.{Mention, SemanticRelation}
+import edu.illinois.cs.cogcomp.illinoisRE.data.{ Mention, SemanticRelation }
 import edu.illinois.cs.cogcomp.illinoisRE.mention.MentionUtil
 import edu.illinois.cs.cogcomp.illinoisRE.relation.RelationExtractor
 import edu.illinois.cs.cogcomp.saul.util.Logging
@@ -43,12 +44,13 @@ object RESensors extends Logging {
     formRelationTraningExamples(sentenceMentions, goldRelations)
   }
 
-  /** Converts constituents into [[Mention]] instances
-    *
-    * @param constituentList List of constituents (Entity Mentions)
-    * @param discardNullMentions Decide if we need to discard NULL labelled entities
-    * @return List of [[Mention]] instances.
-    */
+  /**
+   * Converts constituents into [[Mention]] instances
+   *
+   * @param constituentList List of constituents (Entity Mentions)
+   * @param discardNullMentions Decide if we need to discard NULL labelled entities
+   * @return List of [[Mention]] instances.
+   */
   private def convertConstituentsIntoMentions(constituentList: Seq[Constituent], discardNullMentions: Boolean): Seq[Mention] = {
     val consList = if (discardNullMentions) constituentList.filterNot(_.getLabel.equalsIgnoreCase("NULL")) else constituentList
 
@@ -58,14 +60,15 @@ object RESensors extends Logging {
     })
   }
 
-  /** Gets Gold Relations from the given [[TextAnnotation]] instance.
-    *
-    * @param document [[TextAnnotation]] document instance
-    * @param mentionViewName View Name for Mentions
-    * @param relationFineViewName View Name for Fine Relations - Gold
-    * @param relationCoarseViewName View Name for Coarse Relations - Gold
-    * @return Gold relation data
-    */
+  /**
+   * Gets Gold Relations from the given [[TextAnnotation]] instance.
+   *
+   * @param document [[TextAnnotation]] document instance
+   * @param mentionViewName View Name for Mentions
+   * @param relationFineViewName View Name for Fine Relations - Gold
+   * @param relationCoarseViewName View Name for Coarse Relations - Gold
+   * @return Gold relation data
+   */
   private def getGoldRelations(document: TextAnnotation, mentionViewName: String, relationFineViewName: String, relationCoarseViewName: String): Seq[((Constituent, Constituent), JMap[String, String])] = {
     val mentionView = document.getView(mentionViewName)
     val relationView: PredicateArgumentView = document.getView(relationFineViewName).asInstanceOf[PredicateArgumentView]

@@ -1,9 +1,10 @@
-/** This software is released under the University of Illinois/Research and Academic Use License. See
-  * the LICENSE file in the root folder for details. Copyright (c) 2016
-  *
-  * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
-  * http://cogcomp.cs.illinois.edu/
-  */
+/**
+ * This software is released under the University of Illinois/Research and Academic Use License. See
+ * the LICENSE file in the root folder for details. Copyright (c) 2016
+ *
+ * Developed by: The Cognitive Computations Group, University of Illinois at Urbana-Champaign
+ * http://cogcomp.cs.illinois.edu/
+ */
 package org.cogcomp.SaulRelationExtraction
 
 import java.io._
@@ -11,7 +12,7 @@ import java.time.LocalDateTime
 
 import edu.illinois.cs.cogcomp.annotation.Annotator
 import edu.illinois.cs.cogcomp.core.datastructures.ViewNames
-import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{Constituent, SpanLabelView, TextAnnotation}
+import edu.illinois.cs.cogcomp.core.datastructures.textannotation.{ Constituent, SpanLabelView, TextAnnotation }
 import edu.illinois.cs.cogcomp.core.io.caches.TextAnnotationMapDBHandler
 import edu.illinois.cs.cogcomp.core.stats.Counter
 import edu.illinois.cs.cogcomp.core.utilities.Table
@@ -23,16 +24,17 @@ import edu.illinois.cs.cogcomp.lbjava.parse.FoldParser
 import edu.illinois.cs.cogcomp.lbjava.parse.FoldParser.SplitPolicy
 import edu.illinois.cs.cogcomp.nlp.corpusreaders.ACEReader
 import edu.illinois.cs.cogcomp.pipeline.server.ServerClientAnnotator
-import edu.illinois.cs.cogcomp.saul.classifier.{ClassifierUtils, JointTrainSparseNetwork}
-import edu.illinois.cs.cogcomp.saul.parser.{IterableToLBJavaParser, LBJavaParserToIterable}
+import edu.illinois.cs.cogcomp.saul.classifier.{ ClassifierUtils, JointTrainSparseNetwork }
+import edu.illinois.cs.cogcomp.saul.parser.{ IterableToLBJavaParser, LBJavaParserToIterable }
 import edu.illinois.cs.cogcomp.saul.util.Logging
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable
 import scala.util.Random
 
-/** Relation Extraction
-  */
+/**
+ * Relation Extraction
+ */
 object RelationExtractionApp extends Logging {
   /** Enumerates Experiment Type */
   object REExperimentType extends Enumeration {
@@ -386,12 +388,13 @@ object RelationExtractionApp extends Logging {
     })
   }
 
-  /** Method to load ACE Documents
-    * Attempts to fetch the serialized TA instances directly and updates cache if a particular
-    * document is not present in the cache directory.
-    *
-    * @return List of TextAnnotation items each of them representing a single document
-    */
+  /**
+   * Method to load ACE Documents
+   * Attempts to fetch the serialized TA instances directly and updates cache if a particular
+   * document is not present in the cache directory.
+   *
+   * @return List of TextAnnotation items each of them representing a single document
+   */
   def loadDataset(dataset: String): Iterable[TextAnnotation] = {
     logger.info(s"Loading dataset $dataset")
     val sections = Array("bn", "nw")

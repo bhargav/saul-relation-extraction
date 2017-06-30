@@ -8,6 +8,8 @@ val headerMsg =  """/** This software is released under the University of Illino
                    |  */
                    |""".stripMargin
 
+scalaVersion in ThisBuild := "2.11.8"
+
 version := "0.0.1"
 
 resolvers ++= Seq(
@@ -17,6 +19,7 @@ resolvers ++= Seq(
 
 val cogcompGroupId = "edu.illinois.cs.cogcomp"
 val cogcompNLPVersion = "3.1.1"
+
 
 libraryDependencies ++= Seq(
   cogcompGroupId %% "saul" % "0.5.8-SNAPSHOT",
@@ -31,7 +34,6 @@ lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
       organization := "org.cogcomp",
-      scalaVersion := "2.11.8",
       scalacOptions ++= Seq("-unchecked", "-deprecation")
     )),
     name := "saul-relation-extraction",
